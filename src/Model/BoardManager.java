@@ -21,7 +21,7 @@ public class BoardManager {
             for(int j=0;j<10;j++,col++){
                 String position = row+ Integer.toString(col);
                 Cell newCell = new Cell(position,'~',' ');
-                newCell.setFortName(gameManager.isCellUsedinFort(position));
+                newCell.setFortName(gameManager.isCellUsedInFort(position));
                 cellRow.add(newCell);
             }
             board.add(cellRow);
@@ -49,7 +49,39 @@ public class BoardManager {
             }
         }
     }
-    //prints the cheat board
+    //prints the final board
+    public void printFinalBoard(){
+        System.out.println("Game Board:");
+        int col = 1;
+        char row = 'A';
+        for(int i=0;i<11;i++){
+            for(int j=0;j<11;j++){
+                if( i == 0){
+                    System.out.println(col);
+                    col++;
+                }
+                else if( j == 0){
+                    System.out.println(row);
+                    row++;
+                }
+                else if(board.get(i-1).get(j-1).getValue() == 'X'){
+                    System.out.println(Character.toLowerCase(board.get(i-1).get(j-1).getFortName()));
+                }
+                else if(board.get(i-1).get(j-1).getFortName() ==' '){
+                    if(board.get(i-1).get(j-1).getValue() =='~'){
+                        System.out.println(".");
+                    }
+                    else{
+                        System.out.println(" ");
+                    }
+                }
+                else{
+                    System.out.println(board.get(i-1).get(j-1).getFortName());
+                }
+            }
+        }
+    }
+    //print Cheat Board
     public void printCheatBoard(){
         System.out.println("Game Board:");
         int col = 1;

@@ -6,14 +6,14 @@ import java.util.Random;
 public class GameManager {
     //Manages all the opponents including forts creation
     private ArrayList<Fort> fortList;
-    private ArrayList<Cell> cellUsedinForts;
+    private ArrayList<Cell> cellUsedInForts;
 
     public ArrayList<Fort> getFortList() {
         return fortList;
     }
 
-    public ArrayList<Cell> getCellUsedinForts() {
-        return cellUsedinForts;
+    public ArrayList<Cell> getCellUsedInForts() {
+        return cellUsedInForts;
     }
 
     public void setFortList(ArrayList<Fort> fortList) {
@@ -25,10 +25,10 @@ public class GameManager {
     }
 
     //to check if a cell is already in Fort
-    public char isCellUsedinFort(String position){
-        for(int i=0;i<cellUsedinForts.size();i++){
-            if(cellUsedinForts.get(i).getPosition().equals(position)){
-                return cellUsedinForts.get(i).getFortName();
+    public char isCellUsedInFort(String position){
+        for(int i=0;i<cellUsedInForts.size();i++){
+            if(cellUsedInForts.get(i).getPosition().equals(position)){
+                return cellUsedInForts.get(i).getFortName();
             }
         }
         return ' ';
@@ -47,7 +47,7 @@ public class GameManager {
                 row = random.nextInt(10);
                 col = (char) ('A' + random.nextInt(10));
                 position = col + Integer.toString(row);
-            }while(isCellUsedinFort(position)!=' ');
+            }while(isCellUsedInFort(position)!=' ');
             //check Left,right,bottom,top
         }
         return cellArrayForFort;

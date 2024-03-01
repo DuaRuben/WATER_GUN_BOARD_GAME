@@ -48,7 +48,10 @@ public class TextUI {
                 System.out.println("Congratulations! You won!");
             }
         }
-        boardManager.printBoard();
+        boardManager.printFinalBoard();
+        System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
+        System.out.println("(Lower case fort letters are where you shot.)");
+
 
     }
 
