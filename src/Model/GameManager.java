@@ -1,6 +1,7 @@
 package src.Model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameManager {
     //Manages all the opponents including forts creation
@@ -33,10 +34,12 @@ public class GameManager {
     }
 
     //randomFortGenerator
-    public ArrayList<Cell> randomFortGenerator(){
+    public ArrayList<Cell> randomFortGenerator(int n){
         // create a connected cellarray
         // put the cells used in cellUsedinForts array with fortname
         ArrayList<Cell> cellArrayForFort = new ArrayList<>();
+        Random random = new Random();
+        int 
         return cellArrayForFort;
 
     }
@@ -44,7 +47,7 @@ public class GameManager {
     public void fortListCreation(int number){
         char fortName ='A';
         for(int i=0;i<number;i++){
-            ArrayList<Cell> cellArray = randomFortGenerator();
+            ArrayList<Cell> cellArray = randomFortGenerator(number);
             Fort newFort = new Fort(fortName,cellArray,false,5,0,0);
             this.addFort(newFort);
             fortName++;
