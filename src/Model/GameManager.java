@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class GameManager {
     //Manages all the opponents including forts creation
-    private ArrayList<Fort> fortList;
-    private ArrayList<Cell> cellUsedInForts;
+    private ArrayList<Fort> fortList = new ArrayList<>();
+    private ArrayList<Cell> cellUsedInForts = new ArrayList<>();
 
     public ArrayList<Fort> getFortList() {
         return fortList;
@@ -26,6 +26,9 @@ public class GameManager {
 
     //to check if a cell is already in Fort
     public char isCellUsedInFort(String position){
+        if(cellUsedInForts.isEmpty()){
+            return ' ';
+        }
         for(int i=0;i<cellUsedInForts.size();i++){
             if(cellUsedInForts.get(i).getPosition().equals(position)){
                 return cellUsedInForts.get(i).getFortName();
@@ -34,30 +37,102 @@ public class GameManager {
         return ' ';
     }
 
-    //randomFortGenerator
-    public ArrayList<Cell> randomFortGenerator(int n){
-        // create a connected cellArrayForFort
-        ArrayList<Cell> cellArrayForFort = new ArrayList<>();
-        Random random = new Random();
-        while(cellArrayForFort.size() < 5){
-            int row;
-            char col;
-            String position;
-            do {
-                row = random.nextInt(10);
-                col = (char) ('A' + random.nextInt(10));
-                position = col + Integer.toString(row);
-            }while(isCellUsedInFort(position)!=' ');
-            //check Left,right,bottom,top
-        }
-        return cellArrayForFort;
+    public boolean isValidIndex(int i,int j){
+        return (i < 10 && i >= 0) && (j < 10 && j >= 0);
+    }
+    public boolean exploreCells(int index, ArrayList<Cell> cellArray,Cell startCell,char fortName){
+        int row = (startCell.getPosition().charAt(0)-'A');
+        int col = Character.getNumericValue(startCell.getPosition().charAt(1))-1;
+        String position;
+        //check Left
+        int leftrow = row;
+        int leftcol = col -1;
+        if(isValidIndex(leftrow,leftcol)){
+            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            if(isCellUsedInFort(position)==' '){
+                Cell newcell = new Cell(position,'~',fortName);
+                cellArray.add(newcell);
 
+            }
+        }
+        //check right
+        int rightrow = row;
+        int rightcol = col+1;
+        if(isValidIndex(rightrow,rightcol)){
+            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            if(isCellUsedInFort(position)==' '){
+                Cell newcell = new Cell(position,'~',fortName);
+                cellArray.add(newcell);
+            }
+        }
+        //check up
+        int uprow = row-1;
+        int upcol = col;
+        if(isValidIndex(uprow,upcol)){
+            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            if(isCellUsedInFort(position)==' '){
+                Cell newcell = new Cell(position,'~',fortName);
+                cellArray.add(newcell);
+            }
+        }
+        //check down
+        int downrow = row+1;
+        int downcol = col;
+        if(isValidIndex(downrow,downcol)){
+            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            if(isCellUsedInFort(position)==' '){
+                Cell newcell = new Cell(position,'~',fortName);
+                cellArray.add(newcell);
+            }
+        }
+        //check if cellArray is full return true
+        if(cellArray.size() == 5){
+            return true;
+        }
+        else{
+            index++;//else increment index
+        }
+        //if index is invalid return false;
+        if(index >= cellArray.size()){
+            return false;
+        }
+        else{
+            exploreCells(index,cellArray,cellArray.get(index) ,fortName);//else call exploreCells with startCell = cellArray[index]
+        }
+        return false; // will never reach hear
+    }
+
+    //randomFortGenerator
+    public void randomFortGenerator(char fortName,ArrayList<Cell> cellArray){
+        // create a connected cellArrayForFort
+        boolean flag = false;
+        while(!flag){
+            int index = 0;
+            Random random = new Random();
+            int col;
+            char row;
+            String position;
+            Cell startCell;
+            do {
+                col = random.nextInt(10);
+                row = (char) ('A' + random.nextInt(10));
+                position = row + Integer.toString(col);
+                startCell = new Cell(position, '~', fortName);
+            } while (isCellUsedInFort(position) != ' ');
+            cellArray.add(startCell);
+            flag = exploreCells(index, cellArray, startCell,fortName);
+        }
+        for(int i=0;i<cellArray.size();i++){
+            cellUsedInForts.add(cellArray.get(i));
+        }
     }
     //FortList creation
     public void fortListCreation(int number){
         char fortName ='A';
         for(int i=0;i<number;i++){
-            ArrayList<Cell> cellArray = randomFortGenerator(number);
+            ArrayList<Cell> cellArray = new ArrayList<>();
+            boolean flag = false;
+            randomFortGenerator(fortName,cellArray);
             Fort newFort = new Fort(fortName,cellArray,false,5,0,0);
             this.addFort(newFort);
             fortName++;
