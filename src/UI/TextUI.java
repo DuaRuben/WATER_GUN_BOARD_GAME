@@ -1,16 +1,29 @@
 package src.UI;
 
+import src.Model.BoardManager;
+import src.Model.GameManager;
+
 import java.util.Scanner;
 
 public class TextUI {
     public void start(){
         boolean isDone = false;
+        int n = 5;
+        boolean isCheat = true;
+        BoardManager boardManager = new BoardManager();
+        GameManager gameManager = new GameManager();
+        //print cheat board if condition is true
+        if(isCheat){
+            boardManager.printCheatBoard();
+        }
+        System.out.println("Starting game with" +n+ "forts.");
+        System.out.println("------------------------");
+        System.out.println("Welcome to Fort Defense!");
+        System.out.println("by Ruben and Pratham");
+        System.out.println("------------------------");
         while(!isDone) {
-            System.out.println("");
-            System.out.println("Game Board:");
-            //print game board if no cheat
-            // else print the cheat game board
-            System.out.println("Opponents points: 0 / 2500.");
+            boardManager.printBoard();
+            System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
             System.out.println("Enter Your Move:");
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine();

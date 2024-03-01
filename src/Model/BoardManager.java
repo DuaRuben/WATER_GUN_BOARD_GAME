@@ -14,6 +14,7 @@ public class BoardManager {
 
     //prints the board
     public void printBoard(){
+        System.out.println("Game Board:");
         int col = 1;
         char row = 'A';
         for(int i=0;i<11;i++){
@@ -34,6 +35,7 @@ public class BoardManager {
     }
     //prints the cheat board
     public void printCheatBoard(){
+        System.out.println("Game Board:");
         int col = 1;
         char row = 'A';
         for(int i=0;i<11;i++){

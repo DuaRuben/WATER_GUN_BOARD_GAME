@@ -3,13 +3,13 @@ package src.Model;
 import java.util.ArrayList;
 
 public class Fort {
-    private String fortName;
+    private char fortName;
     private ArrayList<Cell> cellArray;
     private boolean isDestroyed;
     private int undamagedCells;
     private int points;
 
-    public Fort(String fortName, ArrayList<Cell> cellArray, boolean isDestroyed, int undamagedCells, int points) {
+    public Fort(char fortName, ArrayList<Cell> cellArray, boolean isDestroyed, int undamagedCells, int points) {
         this.fortName = fortName;
         this.cellArray = cellArray;
         this.isDestroyed = isDestroyed;
@@ -17,7 +17,7 @@ public class Fort {
         this.points = points;
     }
 
-    public String getFortName() {
+    public char getFortName() {
         return fortName;
     }
 
@@ -37,7 +37,7 @@ public class Fort {
         return points;
     }
 
-    public void setFortName(String fortName) {
+    public void setFortName(char fortName) {
         this.fortName = fortName;
     }
 
