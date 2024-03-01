@@ -6,13 +6,16 @@ import src.Model.GameManager;
 import java.util.Scanner;
 
 public class TextUI {
-    public void start(int forts, boolean isCheat){
+    public int start(int forts, boolean isCheat){
         boolean isDone = false;
         BoardManager boardManager = new BoardManager();
         GameManager gameManager = new GameManager();
         //print cheat board if condition is true
-        gameManager.fortListCreation(forts);
-        boardManager.boardCreation();
+        boolean isGameCreated = gameManager.fortListCreation(forts);
+        if(!isGameCreated){
+            return 1;
+        }
+        boardManager.boardCreation(gameManager);
         if(isCheat){
             boardManager.printCheatBoard();
         }
@@ -28,7 +31,7 @@ public class TextUI {
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine();
             //Give the result as hit or miss
-            boolean result = boardManager.isHit(userInput);
+            boolean result = boardManager.isHit(userInput,gameManager);
             if(result){
                 System.out.println("HIT!");
             }
@@ -50,7 +53,7 @@ public class TextUI {
         boardManager.printFinalBoard();
         System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
         System.out.println("(Lower case fort letters are where you shot.)");
-
+        return 0;
 
     }
 

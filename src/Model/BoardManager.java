@@ -12,8 +12,7 @@ public class BoardManager {
 
 
     //board creation
-    public void boardCreation(){
-        GameManager gameManager = new GameManager();
+    public void boardCreation(GameManager gameManager){
         char row ='A';
         for(int i=0;i<10;i++,row++){
             ArrayList<Cell> cellRow = new ArrayList<>();
@@ -21,7 +20,8 @@ public class BoardManager {
             for(int j=0;j<10;j++,col++){
                 String position = row+ Integer.toString(col);
                 Cell newCell = new Cell(position,'~',' ');
-                newCell.setFortName(gameManager.isCellUsedInFort(position));
+                char fortName = gameManager.isCellUsedInFort(position);
+                newCell.setFortName(fortName);
                 cellRow.add(newCell);
             }
             board.add(cellRow);
@@ -33,20 +33,19 @@ public class BoardManager {
         System.out.println("Game Board:");
         int col = 1;
         char row = 'A';
-        for(int i=0;i<11;i++){
-            for(int j=0;j<11;j++){
-                if( i == 0){
-                    System.out.println(col);
-                    col++;
-                }
-                else if( j == 0){
-                    System.out.println(row);
-                    row++;
-                }
-                else{
-                    System.out.println(board.get(i-1).get(j-1).getValue());
-                }
+        System.out.print("  ");
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-3d", col++);
+        }
+        System.out.println();
+
+        // Print row headers and board values
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-2c", row++);
+            for (int j = 0; j < 10; j++) {
+                System.out.printf("%-3s", board.get(i).get(j).getValue());
             }
+            System.out.println();
         }
     }
     //prints the final board
@@ -54,31 +53,33 @@ public class BoardManager {
         System.out.println("Game Board:");
         int col = 1;
         char row = 'A';
+        System.out.print("  ");
         for(int i=0;i<11;i++){
             for(int j=0;j<11;j++){
                 if( i == 0){
-                    System.out.println(col);
+                    System.out.print(col+"  ");
                     col++;
                 }
                 else if( j == 0){
-                    System.out.println(row);
+                    System.out.print(row+"  ");
                     row++;
                 }
                 else if(board.get(i-1).get(j-1).getValue() == 'X'){
-                    System.out.println(Character.toLowerCase(board.get(i-1).get(j-1).getFortName()));
+                    System.out.print(Character.toLowerCase(board.get(i-1).get(j-1).getFortName())+"  ");
                 }
                 else if(board.get(i-1).get(j-1).getFortName() ==' '){
                     if(board.get(i-1).get(j-1).getValue() =='~'){
-                        System.out.println(".");
+                        System.out.print("."+"  ");
                     }
                     else{
-                        System.out.println(" ");
+                        System.out.print(" "+"  ");
                     }
                 }
                 else{
-                    System.out.println(board.get(i-1).get(j-1).getFortName());
+                    System.out.print(board.get(i-1).get(j-1).getFortName()+"  ");
                 }
             }
+            System.out.println();
         }
     }
     //print Cheat Board
@@ -86,31 +87,32 @@ public class BoardManager {
         System.out.println("Game Board:");
         int col = 1;
         char row = 'A';
+        System.out.print("  ");
         for(int i=0;i<11;i++){
             for(int j=0;j<11;j++){
                 if( i == 0){
-                    System.out.println(col);
+                    System.out.print(col+"  ");
                     col++;
                 }
                 else if( j == 0){
-                    System.out.println(row);
+                    System.out.print(row+"  ");
                     row++;
                 }
                 else if(board.get(i-1).get(j-1).getFortName() ==' '){
-                    System.out.println(".");
+                    System.out.print("."+"  ");
                 }
                 else{
-                    System.out.println(board.get(i-1).get(j-1).getFortName());
+                    System.out.print(board.get(i-1).get(j-1).getFortName()+"  ");
                 }
             }
+            System.out.println();
         }
     }
     //returns hit or miss on userInput
-    public boolean isHit(String userInput){
+    public boolean isHit(String userInput,GameManager gameManager){
         //return true for hit and false for miss
-        GameManager gameManager = new GameManager();
         boolean ans = false;
-        int col = (int)(userInput.charAt(1))-1;
+        int col = Character.getNumericValue(userInput.charAt(1))-1;
         int row = (int)userInput.charAt(0)-65;
         char value = board.get(row).get(col).getValue();
         gameManager.calculatePointsForFortList();

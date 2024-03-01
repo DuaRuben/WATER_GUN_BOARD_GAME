@@ -8,6 +8,9 @@ public class GameManager {
     private ArrayList<Fort> fortList = new ArrayList<>();
     private ArrayList<Cell> cellUsedInForts = new ArrayList<>();
 
+    private int i =0;
+    private int j =0;
+
     public ArrayList<Fort> getFortList() {
         return fortList;
     }
@@ -48,38 +51,46 @@ public class GameManager {
         int leftrow = row;
         int leftcol = col -1;
         if(isValidIndex(leftrow,leftcol)){
-            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            position  =  (char)(leftrow+'A') + Integer.toString(leftcol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
                 cellArray.add(newcell);
-
             }
+        }
+        if(cellArray.size() == 5){
+            return true;
         }
         //check right
         int rightrow = row;
         int rightcol = col+1;
         if(isValidIndex(rightrow,rightcol)){
-            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            position  =  (char)(rightrow+'A') + Integer.toString(rightcol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
                 cellArray.add(newcell);
             }
+        }
+        if(cellArray.size() == 5){
+            return true;
         }
         //check up
         int uprow = row-1;
         int upcol = col;
         if(isValidIndex(uprow,upcol)){
-            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            position  =  (char)(uprow+'A') + Integer.toString(upcol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
                 cellArray.add(newcell);
             }
         }
+        if(cellArray.size() == 5){
+            return true;
+        }
         //check down
         int downrow = row+1;
         int downcol = col;
         if(isValidIndex(downrow,downcol)){
-            position  =  (char)(leftrow+'A') + Integer.toString(leftcol);
+            position  =  (char)(downrow+'A') + Integer.toString(downcol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
                 cellArray.add(newcell);
@@ -97,51 +108,59 @@ public class GameManager {
             return false;
         }
         else{
-            exploreCells(index,cellArray,cellArray.get(index) ,fortName);//else call exploreCells with startCell = cellArray[index]
+            exploreCells(index,cellArray,cellArray.get(index),fortName);//else call exploreCells with startCell = cellArray[index]
         }
-        return false; // will never reach hear
+        return true; // will never reach hear
     }
 
     //randomFortGenerator
-    public void randomFortGenerator(char fortName,ArrayList<Cell> cellArray){
+    public boolean randomFortGenerator(char fortName,ArrayList<Cell> cellArray){
         // create a connected cellArrayForFort
         boolean flag = false;
-        while(!flag){
-            int index = 0;
-            Random random = new Random();
-            int col;
-            char row;
-            String position;
-            Cell startCell;
-            do {
-                col = random.nextInt(10);
-                row = (char) ('A' + random.nextInt(10));
-                position = row + Integer.toString(col);
-                startCell = new Cell(position, '~', fortName);
-            } while (isCellUsedInFort(position) != ' ');
-            cellArray.add(startCell);
-            flag = exploreCells(index, cellArray, startCell,fortName);
+        int index = 0;
+        Random random = new Random();
+        int col;
+        char row;
+        String position;
+        Cell startCell;
+        do {
+            col = random.nextInt(9);
+            row = (char) ('A' + random.nextInt(10));
+            position = row + Integer.toString(col+1);
+            startCell = new Cell(position, '~', ' ');
+        } while (isCellUsedInFort(position) != ' ');
+        startCell.setFortName(fortName);
+        cellArray.add(startCell);
+        flag = exploreCells(index, cellArray, startCell, fortName);
+        if(flag == false){
+            return flag;
         }
         for(int i=0;i<cellArray.size();i++){
             cellUsedInForts.add(cellArray.get(i));
         }
+        return flag;
     }
     //FortList creation
-    public void fortListCreation(int number){
+    public boolean fortListCreation(int number){
         char fortName ='A';
         for(int i=0;i<number;i++){
             ArrayList<Cell> cellArray = new ArrayList<>();
             boolean flag = false;
-            randomFortGenerator(fortName,cellArray);
-            Fort newFort = new Fort(fortName,cellArray,false,5,0,0);
+            boolean isCreated = randomFortGenerator(fortName,cellArray);
+            if(isCreated == false){
+                return isCreated;
+            }
+            Fort newFort = new Fort(fortName,cellArray,false,5,0,20);
             this.addFort(newFort);
             fortName++;
         }
+        return true;
     }
 
     public void calculatePointsForFortList(){
         int[] points ={0,1,2,5,20,20};
         for(int i=0;i<fortList.size();i++){
+            System.out.println(fortList.get(i).getUndamagedCells());
             fortList.get(i).setLastPointScored(points[fortList.get(i).getUndamagedCells()]);
             fortList.get(i).setPoints(fortList.get(i).getPoints()+points[fortList.get(i).getUndamagedCells()]);
         }
@@ -159,7 +178,7 @@ public class GameManager {
     //Show Oppoenets Points
     public void showOpponentsPoints(){
         for(int i=0;i<fortList.size();i++){
-            System.out.println("Opponent #"+i+" of "+fortList.size()+" shot you for "+fortList.get(i).getLastPointScored()+" points!");
+            System.out.println("Opponent #"+(i+1)+" of "+fortList.size()+" shot you for "+fortList.get(i).getLastPointScored()+" points!");
         }
     }
 
