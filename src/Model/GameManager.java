@@ -39,6 +39,17 @@ public class GameManager {
         // put the cells used in cellUsedinForts array with fortname
         ArrayList<Cell> cellArrayForFort = new ArrayList<>();
         Random random = new Random();
+        while(cellArrayForFort.size()<5){
+            int row;
+            char col;
+            String position;
+            do {
+                row = random.nextInt(10);
+                col = (char) ('A' + random.nextInt(10));
+                position = col + Integer.toString(row);
+            }while(isCellUsedinFort(position)!=' ');
+            //check Left,right,bottom,top
+        }
         return cellArrayForFort;
 
     }
