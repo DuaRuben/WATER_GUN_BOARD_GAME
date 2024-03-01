@@ -24,6 +24,7 @@ public class GameManager {
         this.fortList.add(newFort);
     }
 
+    //to check if a cell is already in Fort
     public char isCellUsedinFort(String position){
         for(int i=0;i<cellUsedinForts.size();i++){
             if(cellUsedinForts.get(i).getPosition().equals(position)){
@@ -36,10 +37,9 @@ public class GameManager {
     //randomFortGenerator
     public ArrayList<Cell> randomFortGenerator(int n){
         // create a connected cellarray
-        // put the cells used in cellUsedinForts array with fortname
         ArrayList<Cell> cellArrayForFort = new ArrayList<>();
         Random random = new Random();
-        while(cellArrayForFort.size()<5){
+        while(cellArrayForFort.size() < 5){
             int row;
             char col;
             String position;
@@ -63,6 +63,15 @@ public class GameManager {
             fortName++;
         }
     }
+
+    public void calculatePointsForFortList(){
+        int[] points ={0,1,2,5,20,20};
+        for(int i=0;i<fortList.size();i++){
+            fortList.get(i).setLastPointScored(points[fortList.get(i).getUndamagedCells()]);
+            fortList.get(i).setPoints(fortList.get(i).getPoints()+points[fortList.get(i).getUndamagedCells()]);
+        }
+    }
+
 
     //Calculates their total points
     public int getTotalPoints(){

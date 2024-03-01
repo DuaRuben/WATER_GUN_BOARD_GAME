@@ -60,6 +60,9 @@ public class Fort {
     }
 
     public void setUndamagedCells(int undamagedCells) {
+        if(undamagedCells == 0){
+            this.isDestroyed = true;
+        }
         this.undamagedCells = undamagedCells;
     }
 

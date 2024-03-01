@@ -29,6 +29,13 @@ public class TextUI {
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine();
             //Give the result as hit or miss
+            boolean result = boardManager.isHit(userInput);
+            if(result){
+                System.out.println("HIT!");
+            }
+            else{
+                System.out.println("Miss.");
+            }
             //Show Opponents point;
             gameManager.showOpponentsPoints();
             //Check winning or losing condition to exit the loop

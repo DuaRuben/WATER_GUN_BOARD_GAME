@@ -74,4 +74,39 @@ public class BoardManager {
         }
     }
     //returns hit or miss on userInput
+    public boolean isHit(String userInput){
+        //return true for hit and false for miss
+        GameManager gameManager = new GameManager();
+        boolean ans = false;
+        int col = (int)(userInput.charAt(1))-1;
+        int row = (int)userInput.charAt(0)-65;
+        char value = board.get(row).get(col).getValue();
+        gameManager.calculatePointsForFortList();
+        if(value == '~'){
+            char fortName = board.get(row).get(col).getFortName();
+            if(fortName ==' '){
+                board.get(row).get(col).setValue(' ');
+                ans = false;
+            }
+            else{
+                board.get(row).get(col).setValue('X');
+                ans = true;
+                ArrayList<Fort> fortList = gameManager.getFortList();
+                for(int i=0;i<fortList.size();i++){
+                    if(fortList.get(i).getFortName() == board.get(row).get(col).getFortName()){
+                        fortList.get(i).setUndamagedCells(fortList.get(i).getUndamagedCells()-1);
+                        break;
+                    }
+                }
+                gameManager.setFortList(fortList);
+            }
+        }
+        else if(value == 'X'){
+            ans = true;
+        }
+        else if(value == ' '){
+            ans = false;
+        }
+        return ans;
+    }
 }
