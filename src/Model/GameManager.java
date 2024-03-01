@@ -39,7 +39,6 @@ public class GameManager {
         // put the cells used in cellUsedinForts array with fortname
         ArrayList<Cell> cellArrayForFort = new ArrayList<>();
         Random random = new Random();
-        int 
         return cellArrayForFort;
 
     }
