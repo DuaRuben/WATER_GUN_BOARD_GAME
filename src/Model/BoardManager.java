@@ -112,7 +112,14 @@ public class BoardManager {
     public boolean isHit(String userInput,GameManager gameManager){
         //return true for hit and false for miss
         boolean ans = false;
-        int col = Character.getNumericValue(userInput.charAt(1))-1;
+        int size = userInput.length();
+        int col;
+        if(size == 2){
+            col = Character.getNumericValue(userInput.charAt(1))-1;
+        }
+        else{
+            col = 9;
+        }
         int row = (int)userInput.charAt(0)-65;
         char value = board.get(row).get(col).getValue();
         gameManager.calculatePointsForFortList();
