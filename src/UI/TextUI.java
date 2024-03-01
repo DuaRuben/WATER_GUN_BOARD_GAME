@@ -30,6 +30,7 @@ public class TextUI {
             String userInput = scanner.nextLine();
             //Give the result as hit or miss
             //Show Opponents point;
+            gameManager.showOpponentsPoints();
             //Check winning or losing condition to exit the loop
             if(gameManager.hasPlayerLost()){
                 isDone = true;

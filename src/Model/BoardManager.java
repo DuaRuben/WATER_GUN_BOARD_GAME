@@ -10,7 +10,23 @@ public class BoardManager {
         return board;
     }
 
+
     //board creation
+    public void boardCreation(){
+        GameManager gameManager = new GameManager();
+        char row ='A';
+        for(int i=0;i<10;i++,row++){
+            ArrayList<Cell> cellRow = new ArrayList<>();
+            int col = 1;
+            for(int j=0;j<10;j++,col++){
+                String position = row+ Integer.toString(col);
+                Cell newCell = new Cell(position,'~',' ');
+                newCell.setFortName(gameManager.isCellUsedinFort(position));
+                cellRow.add(newCell);
+            }
+            board.add(cellRow);
+        }
+    }
 
     //prints the board
     public void printBoard(){

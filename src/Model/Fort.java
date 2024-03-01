@@ -8,13 +8,15 @@ public class Fort {
     private boolean isDestroyed;
     private int undamagedCells;
     private int points;
+    private int lastPointScored;
 
-    public Fort(char fortName, ArrayList<Cell> cellArray, boolean isDestroyed, int undamagedCells, int points) {
+    public Fort(char fortName, ArrayList<Cell> cellArray, boolean isDestroyed, int undamagedCells, int points, int lastPointScored) {
         this.fortName = fortName;
         this.cellArray = cellArray;
         this.isDestroyed = isDestroyed;
         this.undamagedCells = undamagedCells;
         this.points = points;
+        this.lastPointScored = lastPointScored;
     }
 
     public char getFortName() {
@@ -35,6 +37,14 @@ public class Fort {
 
     public int getPoints() {
         return points;
+    }
+
+    public int getLastPointScored() {
+        return lastPointScored;
+    }
+
+    public void setLastPointScored(int lastPointScored) {
+        this.lastPointScored = lastPointScored;
     }
 
     public void setFortName(char fortName) {
