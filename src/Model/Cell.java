@@ -2,10 +2,10 @@ package src.Model;
 
 public class Cell {
     private String position;
-    private String value;
-    private String fortName;
+    private char value;
+    private char fortName;
 
-    public Cell(String position, String value, String fortName) {
+    public Cell(String position, char value, char fortName) {
         this.position = position;
         this.value = value;
         this.fortName = fortName;
@@ -15,11 +15,11 @@ public class Cell {
         return position;
     }
 
-    public String getValue() {
+    public char getValue() {
         return value;
     }
 
-    public String getFortName() {
+    public char getFortName() {
         return fortName;
     }
 
@@ -27,11 +27,11 @@ public class Cell {
         this.position = position;
     }
 
-    public void setValue(String value) {
+    public void setValue(char value) {
         this.value = value;
     }
 
-    public void setFortName(String fortName) {
+    public void setFortName(char fortName) {
         this.fortName = fortName;
     }
 }

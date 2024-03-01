@@ -48,7 +48,7 @@ public class BoardManager {
                     System.out.println(row);
                     row++;
                 }
-                else if(board.get(i-1).get(j-1).getFortName().isEmpty()){
+                else if(board.get(i-1).get(j-1).getFortName() ==' '){
                     System.out.println(".");
                 }
                 else{

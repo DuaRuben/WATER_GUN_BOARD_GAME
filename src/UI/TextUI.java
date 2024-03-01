@@ -23,6 +23,7 @@ public class TextUI {
         System.out.println("------------------------");
         while(!isDone) {
             boardManager.printBoard();
+            gameManager.fortListCreation(n);
             System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
             System.out.println("Enter Your Move:");
             Scanner scanner = new Scanner(System.in);
@@ -30,7 +31,16 @@ public class TextUI {
             //Give the result as hit or miss
             //Show Opponents point;
             //Check winning or losing condition to exit the loop
+            if(gameManager.hasPlayerLost()){
+                isDone = true;
+                System.out.println("I'm sorry, your fort is all wet! They win!");
+            }
+            if(gameManager.hasPlayerWon()){
+                isDone = true;
+                System.out.println("Congratulations! You won!");
+            }
         }
+        boardManager.printBoard();
 
     }
 

@@ -24,6 +24,7 @@ public class GameManager {
             ArrayList<Cell> cellArray = new ArrayList<>();
             Fort newFort = new Fort(fortName,cellArray,false,5,0);
             this.addFort(newFort);
+            fortName++;
         }
     }
 
@@ -36,4 +37,21 @@ public class GameManager {
         return sum;
     }
     //Checks winning and losing condition
+    public boolean hasPlayerWon(){
+        for(int i=0;i< fortList.size();i++){
+            if(fortList.get(i).getUndamagedCells()!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasPlayerLost(){
+        if(this.getTotalPoints()>2500){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
