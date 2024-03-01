@@ -36,7 +36,7 @@ public class GameManager {
 
     //randomFortGenerator
     public ArrayList<Cell> randomFortGenerator(int n){
-        // create a connected cellarray
+        // create a connected cellArrayForFort
         ArrayList<Cell> cellArrayForFort = new ArrayList<>();
         Random random = new Random();
         while(cellArrayForFort.size() < 5){
