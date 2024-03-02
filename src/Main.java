@@ -8,7 +8,7 @@ import java.util.Objects;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        int forts = 10;
+        int forts = 15;
         boolean cheat = true;
         if(args.length!=0){
             if(args.length > 2) {

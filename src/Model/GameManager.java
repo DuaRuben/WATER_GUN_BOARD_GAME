@@ -41,6 +41,7 @@ public class GameManager {
         return (i < 10 && i >= 0) && (j < 10 && j >= 0);
     }
 
+
     public boolean exploreCells(int count,Cell startCell,char fortName){
         int row = (startCell.getPosition().charAt(0)-'A');
         int size = startCell.getPosition().length();
@@ -120,7 +121,6 @@ public class GameManager {
     //randomFortGenerator
     public boolean randomFortGenerator(char fortName){
         // create a connected cellArrayForFort
-        int count =0;
 
         boolean flag = false;
         boolean exit = false;
@@ -132,6 +132,7 @@ public class GameManager {
         Cell startCell;
 
         while(!exit){
+            int count =0;
             do {
                 col = random.nextInt(10);
                 row = (char) ('A' + random.nextInt(10));
