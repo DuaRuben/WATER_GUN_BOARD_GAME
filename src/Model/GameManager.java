@@ -8,9 +8,6 @@ public class GameManager {
     private ArrayList<Fort> fortList = new ArrayList<>();
     private ArrayList<Cell> cellUsedInForts = new ArrayList<>();
 
-    private int i =0;
-    private int j =0;
-
     public ArrayList<Fort> getFortList() {
         return fortList;
     }
@@ -43,100 +40,125 @@ public class GameManager {
     public boolean isValidIndex(int i,int j){
         return (i < 10 && i >= 0) && (j < 10 && j >= 0);
     }
-    public boolean exploreCells(int index, ArrayList<Cell> cellArray,Cell startCell,char fortName){
+
+    public boolean exploreCells(int count,Cell startCell,char fortName){
         int row = (startCell.getPosition().charAt(0)-'A');
+        int size = startCell.getPosition().length();
         int col = Character.getNumericValue(startCell.getPosition().charAt(1))-1;
         String position;
-        //check Left
-        int leftrow = row;
-        int leftcol = col -1;
-        if(isValidIndex(leftrow,leftcol)){
-            position  =  (char)(leftrow+'A') + Integer.toString(leftcol+1);
+        if(size == 3){
+            col = 9;
+        }
+        int startingIndex = cellUsedInForts.size()-1;
+
+        int leftRow = row;
+        int leftCol = col -1;
+        if(isValidIndex(leftRow,leftCol)){
+            position = (char)(leftRow+'A') + Integer.toString(leftCol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
-                cellArray.add(newcell);
+                this.cellUsedInForts.add(newcell);
+                count++;
             }
         }
-        if(cellArray.size() == 5){
+        if(count == 5){
             return true;
         }
-        //check right
-        int rightrow = row;
-        int rightcol = col+1;
-        if(isValidIndex(rightrow,rightcol)){
-            position  =  (char)(rightrow+'A') + Integer.toString(rightcol+1);
+
+        int rightRow = row;
+        int rightCol = col+1;
+        if(isValidIndex(rightRow,rightCol)){
+            position  =  (char)(rightRow+'A') + Integer.toString(rightCol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
-                cellArray.add(newcell);
+                this.cellUsedInForts.add(newcell);
+                count++;
             }
         }
-        if(cellArray.size() == 5){
+        if(count == 5){
             return true;
         }
-        //check up
-        int uprow = row-1;
-        int upcol = col;
-        if(isValidIndex(uprow,upcol)){
-            position  =  (char)(uprow+'A') + Integer.toString(upcol+1);
+
+        int upRow = row-1;
+        int upCol = col;
+        if(isValidIndex(upRow,upCol)){
+            position  =  (char)(upRow+'A') + Integer.toString(upCol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
-                cellArray.add(newcell);
+                this.cellUsedInForts.add(newcell);
+                count++;
             }
         }
-        if(cellArray.size() == 5){
+        if(count == 5){
             return true;
         }
-        //check down
-        int downrow = row+1;
-        int downcol = col;
-        if(isValidIndex(downrow,downcol)){
-            position  =  (char)(downrow+'A') + Integer.toString(downcol+1);
+
+        int downRow = row+1;
+        int downCol = col;
+        if(isValidIndex(downRow,downCol)){
+            position  =  (char)(downRow+'A') + Integer.toString(downCol+1);
             if(isCellUsedInFort(position)==' '){
                 Cell newcell = new Cell(position,'~',fortName);
-                cellArray.add(newcell);
+                this.cellUsedInForts.add(newcell);
+                count++;
             }
         }
-        //check if cellArray is full return true
-        if(cellArray.size() == 5){
+        if(count == 5){
             return true;
         }
-        else{
-            index++;//else increment index
-        }
-        //if index is invalid return false;
-        if(index >= cellArray.size()){
+
+        int lastIndex = cellUsedInForts.size()-1;
+
+        if(lastIndex == startingIndex)
             return false;
-        }
         else{
-            exploreCells(index,cellArray,cellArray.get(index),fortName);//else call exploreCells with startCell = cellArray[index]
+            exploreCells(count,cellUsedInForts.get(lastIndex),fortName);
         }
-        return true; // will never reach hear
+        return true;
     }
 
     //randomFortGenerator
-    public boolean randomFortGenerator(char fortName,ArrayList<Cell> cellArray){
+    public boolean randomFortGenerator(char fortName){
         // create a connected cellArrayForFort
+        int count =0;
+
         boolean flag = false;
-        int index = 0;
+        boolean exit = false;
+
         Random random = new Random();
         int col;
         char row;
         String position;
         Cell startCell;
-        do {
-            col = random.nextInt(9);
-            row = (char) ('A' + random.nextInt(10));
-            position = row + Integer.toString(col+1);
-            startCell = new Cell(position, '~', ' ');
-        } while (isCellUsedInFort(position) != ' ');
-        startCell.setFortName(fortName);
-        cellArray.add(startCell);
-        flag = exploreCells(index, cellArray, startCell, fortName);
-        if(flag == false){
-            return flag;
-        }
-        for(int i=0;i<cellArray.size();i++){
-            cellUsedInForts.add(cellArray.get(i));
+
+        while(!exit){
+            do {
+                col = random.nextInt(10);
+                row = (char) ('A' + random.nextInt(10));
+
+                position = row + Integer.toString(col+1);
+
+                startCell = new Cell(position, '~', ' ');
+
+            } while (isCellUsedInFort(position) != ' ');
+
+            int startingSize = cellUsedInForts.size();
+
+            startCell.setCellFortName(fortName);
+            count++;
+            cellUsedInForts.add(startCell);
+
+            flag = exploreCells(count, startCell, fortName);
+
+            int currentSize = cellUsedInForts.size();
+            int difference = currentSize- startingSize;
+            if(difference<5){
+                for(int i=0;i<difference;i++){
+                    cellUsedInForts.removeLast();
+                }
+                continue;
+            }
+            exit =true;
         }
         return flag;
     }
@@ -144,13 +166,11 @@ public class GameManager {
     public boolean fortListCreation(int number){
         char fortName ='A';
         for(int i=0;i<number;i++){
-            ArrayList<Cell> cellArray = new ArrayList<>();
-            boolean flag = false;
-            boolean isCreated = randomFortGenerator(fortName,cellArray);
-            if(isCreated == false){
+            boolean isCreated = randomFortGenerator(fortName);
+            if(!isCreated){
                 return isCreated;
             }
-            Fort newFort = new Fort(fortName,cellArray,false,5,0,20);
+            Fort newFort = new Fort(fortName,false,5,0,20);
             this.addFort(newFort);
             fortName++;
         }
@@ -174,12 +194,6 @@ public class GameManager {
             sum+=fortList.get(i).getPoints();
         }
         return sum;
-    }
-    //Show Oppoenets Points
-    public void showOpponentsPoints(){
-        for(int i=0;i<fortList.size();i++){
-            System.out.println("Opponent #"+(i+1)+" of "+fortList.size()+" shot you for "+fortList.get(i).getLastPointScored()+" points!");
-        }
     }
 
     //Checks winning and losing condition

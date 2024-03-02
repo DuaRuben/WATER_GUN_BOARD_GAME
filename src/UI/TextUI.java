@@ -1,45 +1,151 @@
 package src.UI;
 
 import src.Model.BoardManager;
+import src.Model.Cell;
+import src.Model.Fort;
 import src.Model.GameManager;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TextUI {
+
+    //prints the board
+    public void printBoard(BoardManager boardManager, GameManager gameManager){
+        ArrayList<ArrayList<Cell>> board = boardManager.getBoard();
+        System.out.println("Game Board:");
+        int col = 1;
+        char row = 'A';
+        System.out.print("  ");
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-3d", col++);
+        }
+        System.out.println();
+
+        // Print row headers and board values
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-2c", row++);
+            for (int j = 0; j < 10; j++) {
+                System.out.printf("%-3s", board.get(i).get(j).getValue());
+            }
+            System.out.println();
+        }
+        System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
+    }
+
+    //prints the final board
+    public void printFinalBoard(BoardManager boardManager, GameManager gameManager){
+        ArrayList<ArrayList<Cell>> board = boardManager.getBoard();
+        System.out.println("Game Board:");
+        int col = 1;
+        char row = 'A';
+        System.out.print("  ");
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-3d", col++);
+        }
+        System.out.println();
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-2c", row++);
+            for (int j = 0; j < 10; j++) {
+                Cell cell = board.get(i).get(j);
+                if(cell.getValue() == 'X'){
+                    System.out.printf("%-3c", Character.toLowerCase(cell.getFortName()));
+                }
+                else if(cell.getFortName() == ' '){
+                    if(cell.getValue() =='~'){
+                        System.out.print(".  ");
+                    }
+                    else{
+                        System.out.print("   ");
+                    }
+                }
+                else{
+                    System.out.printf("%-3c",cell.getFortName());
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
+        System.out.println("(Lower case fort letters are where you shot.)");
+    }
+
+    //print Cheat Board
+    public void printCheatBoard(BoardManager boardManager, GameManager gameManager){
+        ArrayList<ArrayList<Cell>> board = boardManager.getBoard();
+        System.out.println("Game Board:");
+        int col = 1;
+        char row = 'A';
+        System.out.print("  ");
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-3d", col++);
+        }
+        System.out.println();
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-2c", row++);
+            for (int j = 0; j < 10; j++) {
+                Cell cell = board.get(i).get(j);
+                if(cell.getFortName() == ' '){
+                    System.out.print(".  ");
+                }
+                else{
+                    System.out.printf("%-3c",cell.getFortName());
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
+        System.out.println("(Lower case fort letters are where you shot.)");
+        System.out.println("");
+    }
+
+    //Show Oppoenets Points
+    public void showOpponentsPoints(GameManager gameManager){
+        ArrayList<Fort> fortList = gameManager.getFortList();
+        for(int i=0;i<fortList.size();i++){
+            System.out.println("Opponent #"+(i+1)+" of "+fortList.size()+" shot you for "+fortList.get(i).getLastPointScored()+" points!");
+        }
+    }
+
     public int start(int forts, boolean isCheat){
         boolean isDone = false;
         BoardManager boardManager = new BoardManager();
         GameManager gameManager = new GameManager();
-        //print cheat board if condition is true
         boolean isGameCreated = gameManager.fortListCreation(forts);
         if(!isGameCreated){
             return 1;
         }
         boardManager.boardCreation(gameManager);
+
         if(isCheat){
-            boardManager.printCheatBoard();
+            printCheatBoard(boardManager,gameManager);
         }
-        System.out.println("Starting game with" +forts+ "forts.");
+
+        System.out.println("Starting game with " +forts+ " forts.");
         System.out.println("------------------------");
         System.out.println("Welcome to Fort Defense!");
         System.out.println("by Ruben and Pratham");
         System.out.println("------------------------");
+
         while(!isDone) {
-            boardManager.printBoard();
-            System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
+            printBoard(boardManager,gameManager);
+
             System.out.println("Enter Your Move:");
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine();
+
             //Give the result as hit or miss
-            boolean result = boardManager.isHit(userInput,gameManager);
-            if(result){
-                System.out.println("HIT!");
+            //returns false if input was invalid and loop continues
+            boolean flagBoard = boardManager.isHit(userInput,gameManager);
+            if(!flagBoard){
+                System.out.println("Invalid target. Please enter a coordinate such as D10.");
+                continue;
             }
-            else{
-                System.out.println("Miss.");
-            }
+
             //Show Opponents point;
-            gameManager.showOpponentsPoints();
+            showOpponentsPoints(gameManager);
+
             //Check winning or losing condition to exit the loop
             if(gameManager.hasPlayerLost()){
                 isDone = true;
@@ -50,9 +156,7 @@ public class TextUI {
                 System.out.println("Congratulations! You won!");
             }
         }
-        boardManager.printFinalBoard();
-        System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
-        System.out.println("(Lower case fort letters are where you shot.)");
+        printFinalBoard(boardManager,gameManager);
         return 0;
 
     }

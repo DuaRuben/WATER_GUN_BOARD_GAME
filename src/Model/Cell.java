@@ -31,7 +31,7 @@ public class Cell {
         this.value = value;
     }
 
-    public void setFortName(char fortName) {
+    public void setCellFortName(char fortName) {
         this.fortName = fortName;
     }
 }

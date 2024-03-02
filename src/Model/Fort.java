@@ -3,28 +3,22 @@ package src.Model;
 import java.util.ArrayList;
 
 public class Fort {
-    private char fortName;
-    private ArrayList<Cell> cellArray;
+    private char name;
     private boolean isDestroyed;
     private int undamagedCells;
     private int points;
     private int lastPointScored;
 
-    public Fort(char fortName, ArrayList<Cell> cellArray, boolean isDestroyed, int undamagedCells, int points, int lastPointScored) {
-        this.fortName = fortName;
-        this.cellArray = cellArray;
+    public Fort(char name, boolean isDestroyed, int undamagedCells, int points, int lastPointScored) {
+        this.name = name;
         this.isDestroyed = isDestroyed;
         this.undamagedCells = undamagedCells;
         this.points = points;
         this.lastPointScored = lastPointScored;
     }
 
-    public char getFortName() {
-        return fortName;
-    }
-
-    public ArrayList<Cell> getCellArray() {
-        return cellArray;
+    public char getName() {
+        return name;
     }
 
     public boolean isDestroyed() {
@@ -47,12 +41,8 @@ public class Fort {
         this.lastPointScored = lastPointScored;
     }
 
-    public void setFortName(char fortName) {
-        this.fortName = fortName;
-    }
-
-    public void setCellArray(ArrayList<Cell> cellArray) {
-        this.cellArray = cellArray;
+    public void setName(char name) {
+        this.name = name;
     }
 
     public void setDestroyed(boolean destroyed) {
@@ -61,7 +51,7 @@ public class Fort {
 
     public void setUndamagedCells(int undamagedCells) {
         if(undamagedCells == 0){
-            this.isDestroyed = true;
+            this.setDestroyed(true);
         }
         this.undamagedCells = undamagedCells;
     }
