@@ -28,27 +28,27 @@ public class BoardManager {
     }
 
     //returns hit or miss on userInput
-    public boolean isHit(String userInput,GameManager gameManager){
+    public int isHit(String userInput,GameManager gameManager){
         //return true for hit and false for miss
 
         int size = userInput.length();
         if(size >3 || size <2){     //For cases like A or A100
-            return false;
+            return -1;
         }
 
         int col = Character.getNumericValue(userInput.charAt(1))-1;
         int row = (int)(Character.toUpperCase(userInput.charAt(0))-'A');
 
         if(row > 10){               //For cases like Z10
-            return false;
+            return -1;
         }
         if(size == 3){
             int check = Character.getNumericValue(userInput.charAt(2));
             if( col>1){             // for cases like A90
-                return false;
+                return -1;
             }
             else if(check >0){      //For cases like A11
-                return false;
+                return -1;
             }
             else{
                 col = 9;
@@ -63,11 +63,10 @@ public class BoardManager {
             char fortName = board.get(row).get(col).getFortName();
             if(fortName ==' '){
                 board.get(row).get(col).setValue(' ');
-                System.out.println("Miss.");
+                return 1;
             }
             else{
                 board.get(row).get(col).setValue('X');
-                System.out.println("HIT!");
                 ArrayList<Fort> fortList = gameManager.getFortList();
                 for(int i=0;i<fortList.size();i++){
                     if(fortList.get(i).getName() == board.get(row).get(col).getFortName()){
@@ -76,14 +75,15 @@ public class BoardManager {
                     }
                 }
                 gameManager.setFortList(fortList);
+                return 2;
             }
         }
         else if(value == 'X'){
-            System.out.println("HIT!");
+            return 2;
         }
         else if(value == ' '){
-            System.out.println("Miss.");
+            return 1;
         }
-        return true;
+        return 0;
     }
 }

@@ -7,6 +7,7 @@ import src.Model.GameManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class TextUI {
 
@@ -23,13 +24,22 @@ public class TextUI {
         System.out.println();
 
         // Print row headers and board values
-        for (int i = 0; i < 10; i++) {
-            System.out.printf("%-2c", row++);
-            for (int j = 0; j < 10; j++) {
-                System.out.printf("%-3s", board.get(i).get(j).getValue());
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < 10; i++) {
+//            System.out.printf("%-2c", row++);
+//            for (int j = 0; j < 10; j++) {
+//                System.out.printf("%-3s", board.get(i).get(j).getValue());
+//            }
+//            System.out.println();
+//        }
+        IntStream.range(0, 10)
+                .forEach(i -> {
+                    char currentRow = (char) ('A' + i);
+                    System.out.printf("%-2c", currentRow);
+                    IntStream.range(0, 10)
+                            .forEach(j -> System.out.printf("%-3s", board.get(i).get(j).getValue()));
+                    System.out.println();
+                });
+
         System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
     }
 
@@ -81,19 +91,20 @@ public class TextUI {
             System.out.printf("%-3d", col++);
         }
         System.out.println();
-        for (int i = 0; i < 10; i++) {
-            System.out.printf("%-2c", row++);
-            for (int j = 0; j < 10; j++) {
+
+        IntStream.range(0, 10).forEach(i -> {
+            char currentRow = (char) ('A' + i);
+            System.out.printf("%-2c", currentRow);
+            IntStream.range(0, 10).forEach(j -> {
                 Cell cell = board.get(i).get(j);
-                if(cell.getFortName() == ' '){
+                if (cell.getFortName() == ' ') {
                     System.out.print(".  ");
+                } else {
+                    System.out.printf("%-3c", cell.getFortName());
                 }
-                else{
-                    System.out.printf("%-3c",cell.getFortName());
-                }
-            }
+            });
             System.out.println();
-        }
+        });
 
         System.out.println("Opponents points:"+ gameManager.getTotalPoints() +"/ 2500.");
         System.out.println("(Lower case fort letters are where you shot.)");
@@ -103,9 +114,12 @@ public class TextUI {
     //Show Oppoenets Points
     public void showOpponentsPoints(GameManager gameManager){
         ArrayList<Fort> fortList = gameManager.getFortList();
-        for(int i=0;i<fortList.size();i++){
-            System.out.println("Opponent #"+(i+1)+" of "+fortList.size()+" shot you for "+fortList.get(i).getLastPointScored()+" points!");
-        }
+        IntStream.range(0, fortList.size())
+                .forEach(i -> System.out.println("Opponent #" +
+                        (i + 1) + " of " + fortList.size() +
+                        " shot you for " + fortList.get(i).getLastPointScored() +
+                        " points!"));
+
     }
 
     public int start(int forts, boolean isCheat){
@@ -137,10 +151,14 @@ public class TextUI {
 
             //Give the result as hit or miss
             //returns false if input was invalid and loop continues
-            boolean flagBoard = boardManager.isHit(userInput,gameManager);
-            if(!flagBoard){
+            int flagBoard = boardManager.isHit(userInput,gameManager);
+            if(flagBoard == -1){
                 System.out.println("Invalid target. Please enter a coordinate such as D10.");
                 continue;
+            } else if (flagBoard == 1) {
+                System.out.println("Miss.");
+            } else if (flagBoard == 2) {
+                System.out.println("Hit.");
             }
 
             //Show Opponents point;
@@ -160,5 +178,7 @@ public class TextUI {
         return 0;
 
     }
-
+    public void printMessage(String msg) {
+        System.out.println(msg);
+    }
 }

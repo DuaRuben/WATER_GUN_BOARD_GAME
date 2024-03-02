@@ -8,8 +8,8 @@ import java.util.Objects;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        int forts = 15;
-        boolean cheat = true;
+        int forts = 5;
+        boolean cheat = false;
         if(args.length!=0){
             if(args.length > 2) {
                 System.err.println("Invalid Input");
@@ -33,7 +33,7 @@ public class Main {
         TextUI UI = new TextUI();
         int check = UI.start(forts, cheat);
         if(check == 1){
-            System.out.println("Error: Unable to place "+forts+" on the board.");
+            System.out.println("Error: Unable to place " + forts + " on the board.");
             System.out.println("Try running game again with fewer forts.");
         }
     }

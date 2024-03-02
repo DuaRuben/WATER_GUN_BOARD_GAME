@@ -29,9 +29,9 @@ public class GameManager {
         if(cellUsedInForts.isEmpty()){
             return ' ';
         }
-        for(int i=0;i<cellUsedInForts.size();i++){
-            if(cellUsedInForts.get(i).getPosition().equals(position)){
-                return cellUsedInForts.get(i).getFortName();
+        for (Cell cellUsedInFort : cellUsedInForts) {
+            if (cellUsedInFort.getPosition().equals(position)) {
+                return cellUsedInFort.getFortName();
             }
         }
         return ' ';
@@ -181,10 +181,9 @@ public class GameManager {
 
     public void calculatePointsForFortList(){
         int[] points ={0,1,2,5,20,20};
-        for(int i=0;i<fortList.size();i++){
-            System.out.println(fortList.get(i).getUndamagedCells());
-            fortList.get(i).setLastPointScored(points[fortList.get(i).getUndamagedCells()]);
-            fortList.get(i).setPoints(fortList.get(i).getPoints()+points[fortList.get(i).getUndamagedCells()]);
+        for (Fort fort : fortList) {
+            fort.setLastPointScored(points[fort.getUndamagedCells()]);
+            fort.setPoints(fort.getPoints() + points[fort.getUndamagedCells()]);
         }
     }
 
@@ -192,16 +191,16 @@ public class GameManager {
     //Calculates their total points
     public int getTotalPoints(){
         int sum = 0;
-        for(int i=0;i< fortList.size();i++){
-            sum+=fortList.get(i).getPoints();
+        for (Fort fort : fortList) {
+            sum += fort.getPoints();
         }
         return sum;
     }
 
     //Checks winning and losing condition
     public boolean hasPlayerWon(){
-        for(int i=0;i< fortList.size();i++){
-            if(fortList.get(i).getUndamagedCells()!=0){
+        for (Fort fort : fortList) {
+            if (fort.getUndamagedCells() != 0) {
                 return false;
             }
         }
@@ -209,11 +208,6 @@ public class GameManager {
     }
 
     public boolean hasPlayerLost(){
-        if(this.getTotalPoints()>2500){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return this.getTotalPoints() > 2500;
     }
 }
