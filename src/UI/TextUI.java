@@ -178,7 +178,4 @@ public class TextUI {
         return 0;
 
     }
-    public void printMessage(String msg) {
-        System.out.println(msg);
-    }
 }
