@@ -156,9 +156,10 @@ public class GameManager {
                 for(int i=0;i<difference;i++){
                     cellUsedInForts.removeLast();
                 }
-                continue;
             }
-            exit =true;
+            else{
+                exit = true;
+            }
         }
         return flag;
     }
