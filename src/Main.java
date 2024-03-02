@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Main {
     public static void main(String[] args) {
         int forts = 10;
-        boolean cheat = true;
+        boolean cheat = false;
         if(args.length!=0){
             if(args.length > 2) {
                 System.err.println("Invalid Input");
@@ -25,7 +25,7 @@ public class Main {
             if(args.length == 2 && Objects.equals(args[1], "--cheat")) {
                 cheat = true;
             }
-            else{
+            else if(args.length ==2 && !Objects.equals(args[1],"--cheat")){
                 System.err.println("Invalid Input");
                 System.exit(1);
             }

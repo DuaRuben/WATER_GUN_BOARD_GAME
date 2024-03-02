@@ -130,6 +130,7 @@ public class GameManager {
         char row;
         String position;
         Cell startCell;
+        int counter =0;
 
         while(!exit){
             int count =0;
@@ -156,6 +157,10 @@ public class GameManager {
             if(difference<5){
                 for(int i=0;i<difference;i++){
                     cellUsedInForts.removeLast();
+                }
+                counter++;
+                if(counter == 10){
+                    exit = true;
                 }
             }
             else{
